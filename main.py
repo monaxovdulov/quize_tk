@@ -7,7 +7,7 @@ question = [
         'answer': '1914'
     },
     {
-        'question': 'Когда началась вторая мироая война?',
+        'question': 'Когда началась вторая мировая война?',
         'answer': '1939'
     },
     {
@@ -17,9 +17,11 @@ question = [
 ]
 
 counter_question = 0
+guess_questions = 0
 
 root = Tk()
-root.geometry("450x600")
+root.geometry("450x150")
+root.config(background="grey")
 
 
 def get_question():
@@ -28,18 +30,22 @@ def get_question():
 
 def show_question():
     question_dict = get_question()
-    question_text_lable.config(text=question_dict['question'])
+    question_text_label.config(text=question_dict['question'])
 
 
 def check_answer():
+    global guess_questions
     user_answer = user_answer_entry.get()
     question_dict = get_question()
     if user_answer == question_dict['answer']:
         messagebox.showinfo("Success", "This is a correct answer")
+        guess_questions += 1
+        score_user_label.config(text=f"Отгадано вопросов: {guess_questions}")
     else:
         messagebox.showerror("Error", "This is not Correct")
     user_answer_entry.delete(0, END)
     next_question()
+
 
 def next_question():
     global counter_question
@@ -51,8 +57,8 @@ def next_question():
     root.after(1000, show_question())
 
 
-question_text_lable = Label(text="")
-question_text_lable.pack()
+question_text_label = Label(text="", bg='grey')
+question_text_label.pack()
 
 user_answer_entry = Entry()
 user_answer_entry.pack()
@@ -60,6 +66,10 @@ user_answer_entry.pack()
 submit_button = Button(text="Ответить", bg='blue', command=check_answer)
 submit_button.pack()
 
+score_user_label = Label(text=f"Отгадано вопросов: {guess_questions}", bg='grey')
+score_user_label.pack()
+
 show_question()
 
 root.mainloop()
+
